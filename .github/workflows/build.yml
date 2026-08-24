@@ -35,13 +35,6 @@ jobs:
       - name: Build
         run: dotnet build src/OpenDota.NET.sln -c Release --no-restore
 
-      - name: Test
-        run: dotnet test src/OpenDota.NET.sln -c Release --no-build --logger "trx;LogFileName=test-results.trx"
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: '**/TestResults/*.trx'
-          if-no-files-found: ignore
+      # No test step: every test in OpenDota.NET.Tests calls the live OpenDota
+      # web API, so the suite depends on that service being up, unthrottled and
+      # returning today's data. Run it locally with `dotnet test` when needed.
